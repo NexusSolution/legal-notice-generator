@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Customer Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Add Customer Data</h1>
+    <div class="form-container">
+        <label for="customerName">Customer Name:</label><br>
+        <input type="text" id="customerName" required><br><br>
+
+        <label for="lanNo">LAN No:</label><br>
+        <input type="text" id="lanNo" required><br><br>
+
+        <label for="totalOutstanding">Total Outstanding:</label><br>
+        <input type="number" id="totalOutstanding" required><br><br>
+
+        <label for="agentName">Agent Name:</label><br>
+        <input type="text" id="agentName" required><br><br>
+
+        <label for="agentNumber">Agent Number:</label><br>
+        <input type="text" id="agentNumber" required><br><br>
+
+        <label for="logoUpload">Upload Logo (PNG):</label><br>
+        <input type="file" id="logoUpload" accept="image/png"><br><br>
+
+        <button type="button" onclick="generateNotice()">Submit</button>
+    </div>
+
+    <script>
+        function generateNotice() {
+            const customerName = document.getElementById('customerName').value;
+            const lanNo = document.getElementById('lanNo').value;
+            const totalOutstanding = document.getElementById('totalOutstanding').value;
+            const agentName = document.getElementById('agentName').value;
+            const agentNumber = document.getElementById('agentNumber').value;
+            const logoUpload = document.getElementById('logoUpload').files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logo = e.target.result;
+                const noticeWindow = window.open('', '_blank');
+                noticeWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Legal Notice</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: white;
+                                padding: 20px;
+                            }
+                            .notice {
+                                border: 2px solid black;
+                                padding: 20px;
+                                text-align: center;
+                                position: relative;
+                                width: 80%;
+                                margin: auto;
+                            }
+                            .notice h1 {
+                                font-size: 24px;
+                                font-weight: bold;
+                            }
+                            .notice h2 {
+                                color: red;
+                                font-size: 20px;
+                            }
+                            .notice h3 {
+                                font-size: 16px;
+                                margin: 0;
+                            }
+                            .text-left {
+                                text-align: left;
+                            }
+                            .line {
+                                margin: 20px 0;
+                                border-top: 2px solid black;
+                            }
+                            .logo {
+                                width: 100px;
+                                height: auto;
+                                position: absolute;
+                            }
+                            #leftLogo {
+                                left: 20px;
+                                top: 20px;
+                            }
+                            #rightLogo {
+                                right: 20px;
+                                top: 20px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="notice">
+                            <img src="${logo}" id="leftLogo" class="logo"/>
+                            <img src="${logo}" id="rightLogo" class="logo"/>
+                            <h1>Urgent: Immediate Action Required on Your Loan Payment</h1>
+                            <div class="line"></div>
+                            <h2>LEGAL NOTICE</h2>
+                            <h3>Bajaj Finance Ltd</h3>
+                            <div class="line"></div>
+                            <div class="text-left">
+                                <p>Dear, ${customerName}</p>
+                                <p>This is a final reminder regarding your overdue account with Bajaj Finance!</p>
+                                <p>Account Details:</p>
+                                <p>LOAN ACCOUNT NO: ${lanNo}</p>
+                                <p>TOTAL DUE: ₹${totalOutstanding}</p>
+                                <p>Under such circumstances, you have taken undue advantage of our Trust and also committed breach of the same by intentionally neglecting to make payment.</p>
+                                <p>Therefore, notice is issued to you, and you hereby called upon to let us know why appropriate Legal action should not be initiated against you for breach of terms and conditions as agreed by you.</p>
+                                <p>In case, you failed to act upon, we will be forced to initiate/continue appropriate legal proceedings including Criminal and Civil proceedings at your own cost and risk which you may note.</p>
+                                <p>Please be advised that this is your last chance to clear the outstanding amount.</p>
+                                <p>If the payment is not received by 30th OCT 2024, we will have no choice but to forward your case to our legal department next month. 🚨</p>
+                                <p>You can also deposit cash payment at any of the nearest Bajaj Finance Branch.</p>
+                                <p>To make the payment or discuss any concerns, please contact me directly at ${agentNumber}. We are here to help and support you through this process.</p>
+                                <p>Best regards,</p>
+                                <p>${agentName}</p>
+                                <p>Bajaj Finance</p>
+                                <p>Mobile: ${agentNumber}</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                noticeWindow.document.close();
+            };
+            if (logoUpload) {
+                reader.readAsDataURL(logoUpload);
+            } else {
+                alert("Please upload a logo.");
+            }
+        }
+    </script>
+</body>
+</html>
